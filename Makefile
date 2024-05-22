@@ -3,7 +3,11 @@ build:
 	docker compose run --rm app bundle install
 
 build_if_not_exist:
-	test -z "$(docker image ls -q solid_queue_hands_on:latest)" && $(MAKE) build
+	@if test -z "$$(docker image ls -q solid_queue_hands_on:latest)"; then \
+	    $(MAKE) build; \
+	else \
+	    echo "Docker image solid_queue_hands_on:latest already exists."; \
+	fi
 
 up_dj:
 	$(MAKE) stop || true
