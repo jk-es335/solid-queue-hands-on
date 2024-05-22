@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @job_completion %>
+
+<div>
+  <%= link_to "Edit this job completion", edit_job_completion_path(@job_completion) %> |
+  <%= link_to "Back to job completions", job_completions_path %>
+
+  <%= button_to "Destroy this job completion", @job_completion, method: :delete %>
+</div>

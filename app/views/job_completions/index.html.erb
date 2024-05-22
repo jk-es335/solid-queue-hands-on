@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Job completions</h1>
+
+<div id="job_completions">
+  <% @job_completions.each do |job_completion| %>
+    <%= render job_completion %>
+    <p>
+      <%= link_to "Show this job completion", job_completion %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New job completion", new_job_completion_path %>

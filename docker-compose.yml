@@ -1,0 +1,104 @@
+version: "3.8"
+
+volumes:
+  db_data: {}
+
+services:
+  app:
+    image: solid_queue_hands_on:latest
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      QUEUE_ADAPTER: ${QUEUE_ADAPTER}
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+    command: bash -c "rm -rf tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "13000:3000"
+  db:
+    image: mysql:8.0.31
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "mysql", "-pmysql"]
+      start_period: 10s
+      interval: 3s
+      timeout: 20s
+      retries: 10
+    environment:
+      MYSQL_DATABASE: handson
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/structure.sql:/docker-entrypoint-initdb.d/structure.sql
+    ports: [ "127.0.0.1:33060:3306" ]
+  solid_queue:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE_ADAPTER: solid_queue
+      RAILS_MAX_THREADS: 10
+    command: bundle exec rails solid_queue:start
+  solid_queue2:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE_ADAPTER: solid_queue
+      RAILS_MAX_THREADS: 10
+    command: bundle exec rails solid_queue:start
+  solid_queue3:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE_ADAPTER: solid_queue
+      RAILS_MAX_THREADS: 10
+    command: bundle exec rails solid_queue:start
+  delayed_job:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE: default
+      QUEUE_ADAPTER: delayed_job
+    command: bundle exec rake jobs:work
+  delayed_job2:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE: default
+      QUEUE_ADAPTER: delayed_job
+    command: bundle exec rake jobs:work

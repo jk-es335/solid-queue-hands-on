@@ -1,0 +1,2 @@
+class JobCompletion < ApplicationRecord
+end
