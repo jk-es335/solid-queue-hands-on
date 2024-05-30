@@ -102,3 +102,29 @@ services:
       QUEUE: default
       QUEUE_ADAPTER: delayed_job
     command: bundle exec rake jobs:work
+  delayed_job3:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE: default
+      QUEUE_ADAPTER: delayed_job
+    command: bundle exec rake jobs:work
+  delayed_job4:
+    image: solid_queue_hands_on:latest
+    volumes:
+      - .:/rails:cached
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: "mysql2://root:@db:3306/handson"
+      QUEUE: default
+      QUEUE_ADAPTER: delayed_job
+    command: bundle exec rake jobs:work

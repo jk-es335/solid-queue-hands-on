@@ -19,7 +19,7 @@ up_dj_all:
 	$(MAKE) stop || true
 	echo "QUEUE_ADAPTER=delayed_job" > .env
 	$(MAKE) build_if_not_exist
-	docker compose --env-file .env up -d app db delayed_job delayed_job2
+	docker compose --env-file .env up -d app db delayed_job delayed_job2 delayed_job3 delayed_job4
 
 up_sq:
 	$(MAKE) stop || true
