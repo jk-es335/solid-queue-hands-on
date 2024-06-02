@@ -18,8 +18,10 @@ namespace :sample_job do
 
     # Run your job here. For example:
     Thread.new(queue_size, uuid) do |_queue_size, _uuid|
-      _queue_size.times do
-        SampleJob.perform_later(_uuid)
+      Rails.application.executor.wrap do
+        _queue_size.times do
+          SampleJob.perform_later(_uuid)
+        end
       end
     end
 

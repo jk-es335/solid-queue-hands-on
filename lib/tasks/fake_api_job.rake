@@ -18,8 +18,10 @@ namespace :fake_api_job do
 
     # Run your job here. For example:
     Thread.new(queue_size, uuid) do |_queue_size, _uuid|
-      _queue_size.times do
-        FakeApiJob.perform_later(_uuid)
+      Rails.application.executor.wrap do
+        _queue_size.times do
+          FakeApiJob.perform_later(_uuid)
+        end
       end
     end
 
