@@ -18,10 +18,7 @@ up_dj:
 	docker compose --env-file .env up -d app db delayed_job
 
 up_dj_all:
-	$(MAKE) stop || true
-	echo "QUEUE_ADAPTER=delayed_job" > .env
-	$(MAKE) build_if_not_exist
-	docker compose --env-file .env up -d app db delayed_job
+	$(MAKE) up_dj
 	@if [ $(WORKER) -gt 1 ]; then \
 		docker compose --env-file .env scale delayed_job=$(WORKER); \
 	fi
@@ -33,10 +30,7 @@ up_sq:
 	docker compose --env-file .env up -d app db solid_queue
 
 up_sq_all:
-	$(MAKE) stop || true
-	echo "QUEUE_ADAPTER=solid_queue" > .env
-	$(MAKE) build_if_not_exist
-	docker compose --env-file .env up -d app db solid_queue
+	$(MAKE) up_sq
 	@if [ $(WORKER) -gt 1 ]; then \
 		docker compose --env-file .env scale solid_queue=$(WORKER); \
 	fi
