@@ -29,7 +29,7 @@ namespace :fake_api_job do
     loop do
       completed_jobs = JobCompletion.where(uuid: uuid).count
       if completed_jobs >= queue_size
-        io.info "All jobs completed. (uuid: #{uuid})"
+        io.info "All #{completed_jobs} jobs completed. (uuid: #{uuid})"
         break
       else
         io.info "#{completed_jobs} out of #{queue_size} jobs completed. (uuid: #{uuid})"
