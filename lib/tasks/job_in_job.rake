@@ -19,8 +19,10 @@ namespace :job_in_job do
     # Run your job here. For example:
     Thread.new(queue_size, uuid) do |_queue_size, _uuid|
       Rails.application.executor.wrap do
-        _queue_size.times do
-          JobInJob.perform_later(_uuid)
+        ActiveRecord::Base.transaction do
+          _queue_size.times do
+            JobInJob.perform_later(_uuid)
+          end
         end
       end
     end

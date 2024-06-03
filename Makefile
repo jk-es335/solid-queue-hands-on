@@ -1,3 +1,5 @@
+WORKER ?= 3
+
 build:
 	docker compose build app --no-cache
 	docker compose run --rm app bundle install
@@ -19,7 +21,10 @@ up_dj_all:
 	$(MAKE) stop || true
 	echo "QUEUE_ADAPTER=delayed_job" > .env
 	$(MAKE) build_if_not_exist
-	docker compose --env-file .env up -d app db delayed_job delayed_job2 delayed_job3 delayed_job4
+	docker compose --env-file .env up -d app db delayed_job
+	@if [ $(WORKER) -gt 1 ]; then \
+		docker compose --env-file .env scale delayed_job=$(WORKER); \
+	fi
 
 up_sq:
 	$(MAKE) stop || true
@@ -31,7 +36,10 @@ up_sq_all:
 	$(MAKE) stop || true
 	echo "QUEUE_ADAPTER=solid_queue" > .env
 	$(MAKE) build_if_not_exist
-	docker compose --env-file .env up -d app db solid_queue solid_queue2 solid_queue3
+	docker compose --env-file .env up -d app db solid_queue
+	@if [ $(WORKER) -gt 1 ]; then \
+		docker compose --env-file .env scale solid_queue=$(WORKER); \
+	fi
 
 stop:
 	docker compose down --remove-orphans

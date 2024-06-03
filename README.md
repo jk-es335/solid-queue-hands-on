@@ -14,6 +14,12 @@ multiple workers/dispatchers
 make up_sq_all
 ```
 
+if you want to increase workers,
+
+```bash
+make WORKER=6 up_sq_all 
+````
+
 ### delayed job
 
 ```bash
@@ -25,6 +31,12 @@ multiple processes
 ```bash
 make up_dj_all
 ```
+
+if you want to increase workers,
+
+```bash
+make WORKER=6 up_dj_all 
+````
 
 ## Enqueue jobs
 
