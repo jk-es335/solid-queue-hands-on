@@ -23,6 +23,7 @@ services:
       - "13000:3000"
   db:
     image: mysql:8.0.31
+#    platform: linux/amd64 # for M1 Mac
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "mysql", "-pmysql"]
