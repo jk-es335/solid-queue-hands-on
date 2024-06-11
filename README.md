@@ -17,7 +17,7 @@ make up_sq_all
 if you want to increase workers,
 
 ```bash
-make WORKER=6 up_sq_all 
+make WORKER=4 up_sq_all 
 ````
 
 ### delayed job
@@ -35,7 +35,7 @@ make up_dj_all
 if you want to increase workers,
 
 ```bash
-make WORKER=6 up_dj_all 
+make WORKER=4 up_dj_all 
 ````
 
 ## Enqueue jobs
